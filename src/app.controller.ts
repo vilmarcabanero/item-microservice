@@ -1,4 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+// app.controller.ts
+
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,5 +11,15 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @MessagePattern({ role: 'item', cmd: 'create' })
+  createItem(itemDto) {
+    return this.appService.createItem(itemDto);
+  }
+
+  @MessagePattern({ role: 'item', cmd: 'get-by-id' })
+  getItemById(id: number) {
+    return this.appService.getItemById(id);
   }
 }
